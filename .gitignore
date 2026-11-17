@@ -1,0 +1,16 @@
+# Local editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Credentials and local runtime files
+.env
+.env.*
+*.log
+.node_repl*
+node_modules/
+
+# Exported simulation datasets (may contain user-entered content)
+chat22-*.json

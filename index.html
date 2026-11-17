@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Phòng mô phỏng hội thoại đan xen cho CHAT-22">
+  <title>CHAT-22 · Conversation Lab</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="model.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="index.html"><span class="brand-icon">C<span>22</span></span><span>CHAT-22<small>CONVERSATION LAB</small></span></a>
+    <div class="workspace-label">KHÔNG GIAN MÔ PHỎNG <span class="live-dot"></span></div>
+    <div class="group-card"><span class="group-icon">#</span><div><strong>Nhóm thử nghiệm</strong><small>Dữ liệu hội thoại đan xen</small></div></div>
+    <details class="settings"><summary>Cấu hình nguồn hội thoại</summary><form id="settings-form"><label>Conversation ID<input name="conversation_id" required value="conv_1"></label><label>Channel ID<input name="channel_id" required value="c_sales"></label><label>Group ID<input name="group_id" required value="G01"></label><button class="secondary">Lưu cấu hình</button></form></details>
+    <div class="section-heading"><h2>Thành viên <span id="member-count">0</span></h2><button id="add-member" class="icon-button" title="Thêm thành viên" aria-label="Thêm thành viên">＋</button></div>
+    <p class="hint">Chọn một người để bắt đầu đóng vai.</p>
+    <div id="members" class="members"></div>
+    <div class="data-tools"><h2>Dữ liệu mô phỏng</h2><button id="export">↓ <span>Xuất JSON</span><small>EXPORT</small></button><button id="import">↑ <span>Nhập JSON</span><small>IMPORT</small></button><button id="copy-all">▣ <span>Sao chép toàn bộ</span></button><button id="reset" class="danger">↺ <span>Đặt lại dữ liệu</span></button><input type="file" id="import-file" accept=".json,application/json" hidden></div>
+    <div class="local-note"><span class="live-dot"></span><div><strong>Lưu trên thiết bị</strong><small id="save-status">Tự động lưu · localStorage</small></div></div>
+  </aside>
+  <main class="chat">
+    <header class="chat-header"><div><div class="eyebrow">PHÒNG THỬ NGHIỆM / <span id="group-label">G01</span></div><h1>Hội thoại nhóm <span class="badge">MÔ PHỎNG</span></h1><p><span id="header-members">0</span> thành viên <span>·</span> Không gian cho những cuộc trò chuyện đan xen</p></div><button id="toggle-inspector" class="secondary">{ } Xem dữ liệu</button></header>
+    <div class="conversation-bar"><span><span class="live-dot"></span> Dòng hội thoại</span><span id="message-count">0 tin nhắn · 0 sự kiện</span></div>
+    <section id="messages" class="messages" aria-label="Lịch sử hội thoại" tabindex="0"></section>
+    <section class="composer">
+      <div id="compose-context" class="compose-context" hidden><span id="context-text"></span><button id="cancel-context" class="icon-button" aria-label="Hủy trả lời hoặc sửa">×</button></div>
+      <form id="message-form">
+        <div class="composer-top"><label class="sender-label">Đang đóng vai <select id="sender" aria-label="Người gửi" required></select></label><span class="keyboard-hint">Ctrl / ⌘ + Enter để gửi</span></div>
+        <textarea id="message-text" placeholder="Viết một tin nhắn để bắt đầu câu chuyện…" aria-label="Nội dung tin nhắn" rows="3" required></textarea>
+        <details id="advanced"><summary>⚙ Metadata nâng cao <span>Tùy chọn</span></summary><div class="metadata-grid"><label>Thời gian (+07:00)<input id="timestamp" type="datetime-local" step="1"><small>Để trống: thời điểm hiện tại</small></label><label>Chủ đề<input id="topic" placeholder="Ví dụ: Proposal"><small>Nhãn thủ công, không tự phân luồng</small></label><fieldset><legend>Người liên quan (participants)</legend><div id="participants" class="participant-options"></div></fieldset><label>ACL (mảng JSON)<input id="acl" value='["*"]'><small>Metadata mô phỏng, không phải phân quyền</small></label><label class="full-width">Văn bản OCR / ASR<textarea id="media-text" rows="2" placeholder="Nội dung media_text, nếu có"></textarea></label></div></details>
+        <div class="composer-bottom"><span id="source-note">Nguồn: conv_1 · c_sales</span><button id="send-button" class="primary" type="submit">Gửi tin nhắn <span>↗</span></button></div>
+      </form>
+    </section>
+  </main>
+  <aside id="inspector" class="inspector"><div class="inspector-heading"><div class="inspector-symbol">{ }</div><h2>Chi tiết dữ liệu</h2><p>Metadata rõ ràng.<br>Hội thoại nguyên bản.</p></div><div id="selection-info" class="selection-info">Chọn một tin nhắn để xem metadata và lịch sử sự kiện.</div><div class="json-heading"><span>JSON · SỰ KIỆN MỚI NHẤT</span><button id="copy-selected" class="icon-button" title="Sao chép JSON đã chọn" aria-label="Sao chép JSON đã chọn" disabled>▣</button></div><pre id="json-preview">{}</pre><div id="event-history" class="event-history"></div><div class="inspector-note"><strong>Dành cho Thread Disentanglement</strong><p>Các chủ đề được giữ đan xen theo thứ tự gửi. Không gộp luồng, không dự đoán bằng AI.</p><span>CHAT-22 / RAW DATA</span></div></aside>
+  <dialog id="member-dialog"><form id="member-form"><div class="dialog-heading"><h2 id="member-dialog-title">Thêm thành viên</h2><button type="button" id="close-member" class="icon-button" aria-label="Đóng">×</button></div><label>Tên hiển thị<input id="member-name" required maxlength="80" autocomplete="off"></label><label>ID duy nhất<input id="member-id" required maxlength="100" pattern="[A-Za-z0-9_-]+" placeholder="U_LAN"><small>Chữ, số, dấu gạch dưới hoặc gạch ngang. ID không đổi sau khi tạo.</small></label><button class="primary">Lưu thành viên</button></form></dialog>
+  <div id="toast" role="status" hidden></div>
+</body>
+</html>
