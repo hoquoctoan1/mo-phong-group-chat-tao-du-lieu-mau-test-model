@@ -243,3 +243,69 @@ strong,
 .conversation-bar > span:first-child {
   font-weight: 800;
 }
+
+/* Role-specific composers occupy the right third of the desktop workspace. */
+body { grid-template-columns: 230px minmax(0, 1fr) minmax(360px, 33.333vw); }
+.chat { min-height: 0; }
+.chat-header { padding: 24px 20px; flex-wrap: wrap; }
+.chat-header p { line-height: 1.7; }
+.chat-header h1 { font-size: 21px; }
+.messages { padding: 10px 20px 25px; min-height: 0; }
+.chat-footer { padding: 16px 20px; border-top: 1px solid var(--line); background: white; color: #1f2937; font-size: 11px; line-height: 1.7; }
+.role-panel { min-width: 0; min-height: 0; height: 100dvh; border-left: 1px solid var(--line); background: #eef3fb; display: flex; flex-direction: column; }
+.role-panel-header { padding: 24px 20px 16px; border-bottom: 1px solid #cbd5e1; background: white; }
+.role-panel-header h2 { font-size: 19px; margin: 9px 0; }
+.role-panel-header p { font-size: 11px; line-height: 1.7; margin: 5px 0; }
+.role-panel-header .reply-target { margin-top: 14px; background: #e8efff; border-left: 3px solid #2764e7; border-radius: 5px; padding: 9px 10px; }
+.role-composers { flex: 1; min-height: 0; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.role-composer { margin: 0; flex-shrink: 0; padding: 16px; border: 2px solid #cbd5e1; box-shadow: 0 3px 10px #23334d08; }
+.role-composer.active, .role-composer:focus-within { border-color: #2764e7; box-shadow: 0 0 0 2px #2764e71a; }
+.role-card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.role-identity { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.role-identity .member-name { font-size: 14px; }
+.role-identity .member-name small { font-size: 11px; }
+.role-composer .badge { display: inline; margin-left: 0; flex-shrink: 0; }
+.role-reply-button { width: 100%; text-align: left; margin-bottom: 12px; white-space: normal; font-size: 12px; }
+.role-reply-button:enabled { color: #103477; background: #e8efff; border-color: #99b7f2; }
+.role-input-label { font-size: 12px; }
+.role-input-label textarea { font-size: 14px; line-height: 1.6; min-height: 94px; }
+.role-composer .composer-bottom { flex-wrap: wrap; }
+.role-composer .composer-bottom > span { font-size: 10px; }
+.role-composer .primary { margin-left: auto; font-size: 12px; }
+.role-advanced summary { font-size: 12px; font-weight: 700; cursor: pointer; margin-top: 14px; color: #1f2937; }
+.role-advanced summary span { font-size: 10px; margin-left: 5px; }
+.role-composer .metadata-grid { grid-template-columns: 1fr; max-height: none; overflow: visible; }
+.role-composer .metadata-grid label, .role-composer legend { font-size: 11px; }
+.role-composer .metadata-grid input, .role-composer .metadata-grid textarea { font-size: 12px; }
+.role-composer .metadata-grid small { font-size: 10px; }
+.role-composer .compose-context { font-size: 12px; margin-bottom: 12px; }
+.role-composer .compose-context span { white-space: normal; overflow-wrap: anywhere; }
+.role-panel-footer { padding: 12px 16px; border-top: 1px solid #cbd5e1; background: white; font-size: 10px; line-height: 1.6; }
+.role-empty { padding: 12px; font-size: 13px; line-height: 1.8; }
+#inspector { display: none; min-width: 0; height: 100dvh; }
+body.data-visible #role-panel { display: none; }
+body.data-visible #inspector { display: flex; }
+@media (min-width: 1500px) {
+  body { grid-template-columns: 260px minmax(0, 1fr) minmax(400px, 33.333vw); }
+  .messages { padding-left: 30px; padding-right: 30px; }
+  .role-composer { margin: 0; }
+}
+@media (min-width: 761px) and (max-width: 1050px) {
+  body { grid-template-columns: 180px minmax(0, 1fr) 330px; }
+  .sidebar { padding-left: 10px; padding-right: 10px; }
+  .brand { font-size: 16px; }
+  .brand small { font-size: 8px; letter-spacing: .6px; }
+  .chat-header h1 { font-size: 18px; }
+  .chat-header .badge { display: none; }
+  .role-panel-header { padding: 20px 16px 12px; }
+  .role-panel-header h2 { font-size: 17px; }
+  .role-composers { padding: 12px; }
+}
+@media (max-width: 760px) {
+  body { grid-template-columns: 1fr; }
+  .chat { height: 65dvh; min-height: 360px; }
+  .role-panel, #inspector { height: auto; max-height: none; border-left: 0; }
+  .role-composers { overflow: visible; }
+  .role-panel-footer { position: static; }
+  .role-composer { margin: 0; }
+}

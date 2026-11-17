@@ -9,11 +9,11 @@ Mở **index.html** bằng Chrome, Edge hoặc Firefox hiện đại; hoặc m�
 ## Sử dụng
 
 1. Bấm **＋** bên cạnh Thành viên, nhập tên và ID duy nhất (ví dụ `U_LAN`). Bấm biểu tượng bút để đổi tên; ID giữ nguyên.
-2. Chọn thành viên bên trái hoặc dropdown **Đang đóng vai**, nhập nội dung rồi **Gửi tin nhắn**. `Ctrl+Enter` / `⌘+Enter` cũng gửi; Enter thường xuống dòng. Nội dung giữ nguyên khoảng trắng và xuống dòng.
-3. Mở **Metadata nâng cao** để đặt thời gian quá khứ theo múi giờ +07:00, chủ đề thủ công, participants, OCR/ASR và ACL dạng mảng JSON như `["*"]`, `["role:manager"]`, `["U_LAN","U_NAM"]`. Participants ban đầu là `[]`, không tự chọn toàn nhóm. Các giá trị metadata đã nhập được giữ cho lượt gửi tiếp theo; xóa hoặc bỏ chọn khi muốn đổi kịch bản.
-4. Bấm **Trả lời** dưới bất kỳ tin cũ còn tồn tại. Trích dẫn có thể bấm để quay về tin gốc. Chỉ reply trong cùng `conversation_id` đang cấu hình; nếu khác, đổi cấu hình nguồn trước. Không tự gán chủ đề hay gộp thread.
+2. Khoảng **1/3 trang bên phải** là các khung chat riêng cho từng thành viên, có thể cuộn khi nhiều vai. Nhập và bấm **Gửi tin nhắn** ngay trong khung của vai muốn dùng, không cần đổi dropdown. Chọn thành viên bên trái để đưa con trỏ tới khung tương ứng. `Ctrl+Enter` / `⌘+Enter` gửi từ khung đang nhập; Enter thường xuống dòng. Nội dung giữ nguyên khoảng trắng và xuống dòng. Bản nháp mỗi vai độc lập: gửi từ Lan không xóa phần Nam đang soạn. Bản nháp chỉ giữ trong phiên trang hiện tại, chưa lưu qua reload.
+3. Mỗi khung có **Metadata nâng cao** riêng để đặt thời gian quá khứ theo múi giờ +07:00, chủ đề thủ công, participants, OCR/ASR và ACL dạng mảng JSON như `["*"]`, `["role:manager"]`, `["U_LAN","U_NAM"]`. Participants ban đầu là `[]`, không tự chọn toàn nhóm. Các giá trị metadata đã nhập được giữ cho lượt gửi tiếp theo của vai đó; xóa hoặc bỏ chọn khi muốn đổi kịch bản.
+4. Bấm **Trả lời** dưới tin cũ, rồi bấm **Trả lời msg_…** trong khung vai muốn dùng. Mỗi vai giữ ngữ cảnh reply riêng; nhiều vai có thể trả lời cùng một tin. Nút × hủy reply và giữ nội dung đang soạn. Trích dẫn có thể bấm để quay về tin gốc. Chỉ reply trong cùng `conversation_id` đang cấu hình; nếu khác, đổi cấu hình nguồn trước. Không tự gán chủ đề hay gộp thread.
 5. **Sửa** chỉ đổi nội dung, dùng thời điểm hiện tại hoặc thời gian tùy chỉnh; giữ metadata nguồn của tin gốc. **Xóa** cần xác nhận và hiển thị tombstone. Cả hai thêm sự kiện, không ghi đè bản gốc. Tin đã xóa không thể sửa hoặc nhận reply mới; những reply cũ vẫn giữ tham chiếu.
-6. Chọn tin nhắn để xem JSON mới nhất bên phải. Chọn từng mục trong **Lịch sử** để xem sự kiện cũ; nút sao chép lấy đúng JSON đang xem. **Sao chép toàn bộ** lấy cả gói dữ liệu.
+6. Chọn tin nhắn, bấm **Xem dữ liệu** hoặc nút **{ } msg_…** để xem JSON bên phải. Bấm **Khung đóng vai** để quay lại các ô nhập; bản nháp vẫn giữ nguyên. Chọn từng mục trong **Lịch sử** để xem sự kiện cũ; nút sao chép lấy đúng JSON đang xem. **Sao chép toàn bộ** lấy cả gói dữ liệu. Khi sửa tin, ứng dụng tự đưa nội dung vào đúng khung người gửi gốc và khôi phục bản nháp trước đó khi lưu hoặc hủy sửa.
 7. **Xuất JSON** tải bản sao; **Nhập JSON** kiểm tra toàn bộ trước khi hỏi thay thế dữ liệu hiện tại. Không trộn hai dataset, vì trộn sẽ làm mơ hồ thứ tự sự kiện và ID. **Đặt lại dữ liệu** cần xác nhận; nên xuất trước.
 
 ## Schema và lưu trữ
@@ -50,6 +50,8 @@ Mỗi thay đổi được lưu vào khóa `chat22.simulator.v1`. Nếu localSto
 
 Chạy tùy chọn `node tests.cjs` khi có Node.js. Node chỉ phục vụ kiểm thử, không cần để sử dụng ứng dụng. Bộ test kiểm tra 5 thành viên, 20 tin, 3 chủ đề xen kẽ, reply xa, sửa/xóa và lịch sử, 13 trường, thời gian, JSON round trip, ID sau import, các dữ liệu nhập sai, metadata bất biến, reply đến tin đã xóa, và kiểm tra tĩnh các điểm có thể chèn HTML/script.
 
+Chạy thêm `node tests-ui.cjs` để kiểm tra tương tác qua DOM mô phỏng: khung riêng của 3 vai, sender/metadata chính xác, bản nháp và reply độc lập, sửa đúng người gửi và khôi phục bản nháp, từ chối tin rỗng, chuyển xem JSON, participants và hiển thị HTML như văn bản, nạp lại hội thoại từ dữ liệu lưu. Đây là kiểm thử logic giao diện, không thay thế trình duyệt thật hoặc kiểm tra layout trực quan.
+
 Đã chạy thành công các kiểm tra logic/serialization và cú pháp. **Chưa xác minh trực quan và thao tác trình duyệt thực tế**: công cụ Computer Use dừng do không xác định được URL Chrome. Serialization round trip mô phỏng dữ liệu lưu/tải lại, chưa thay thế kiểm tra reload thật trong trình duyệt. Clipboard, tải file, chọn file import và layout cần kiểm tra thủ công trên trình duyệt đích.
 
 Quy trình kiểm tra thủ công: tạo 5 thành viên → gửi 20 tin với 3 chủ đề → reply tin đầu → sửa/xóa → reload → xuất JSON → nhập lại → so sánh trạng thái và lịch sử. Gửi `<img src=x onerror=alert(1)>` và `<script>alert(1)</script>`: phải xuất hiện như văn bản, không chạy mã. Các nội dung người dùng được đưa vào DOM bằng `textContent` hoặc text node.
@@ -61,6 +63,7 @@ Quy trình kiểm tra thủ công: tạo 5 thành viên → gửi 20 tin với 3
 - `model.js`: schema, kiểm tra dữ liệu, ID, lịch sử sự kiện.
 - `app.js`: DOM, thao tác người dùng, localStorage, import/export và clipboard.
 - `tests.cjs`: kiểm thử không thư viện.
+- `tests-ui.cjs`: kiểm thử tương tác khung vai bằng DOM mô phỏng, không thư viện.
 
 ## Giới hạn
 
